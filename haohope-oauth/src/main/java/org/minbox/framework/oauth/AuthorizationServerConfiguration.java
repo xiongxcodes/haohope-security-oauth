@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
@@ -82,22 +81,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.allowFormAuthenticationForClients()
-                //.passwordEncoder(passwordEncoder())//PasswordEncoder
-        .passwordEncoder( new PasswordEncoder() {
-
-            @Override
-            public String encode(CharSequence rawPassword) {
-                // TODO Auto-generated method stub
-                 return rawPassword.toString();
-            }
-
-            @Override
-            public boolean matches(CharSequence rawPassword, String encodedPassword) {
-                // TODO Auto-generated method stub
-                 return true;
-            }
-            
-        })
+                .passwordEncoder(oauthPasswordEncoder())//PasswordEncoder
                 // Configure open/oauth/token_key access address
                 .tokenKeyAccess("permitAll()")
                 // Configure Open /oauth/check_token Access Address
