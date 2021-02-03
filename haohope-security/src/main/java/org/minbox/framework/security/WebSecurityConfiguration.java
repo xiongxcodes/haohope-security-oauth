@@ -3,6 +3,8 @@ package org.minbox.framework.security;
 import java.util.Collections;
 import java.util.List;
 
+import org.minbox.framework.security.passwordencoder.DefaultSecurityPasswordEncoder;
+import org.minbox.framework.security.passwordencoder.SecurityPasswordEncoder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -55,7 +57,7 @@ public abstract class WebSecurityConfiguration extends WebSecurityConfigurerAdap
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userDetailsService()).passwordEncoder(securityPasswordEncoder());
     }
 
     /**
@@ -96,21 +98,9 @@ public abstract class WebSecurityConfiguration extends WebSecurityConfigurerAdap
      */
     @Bean
     @ConditionalOnMissingBean
-    public PasswordEncoder passwordEncoder() {
+    public SecurityPasswordEncoder securityPasswordEncoder() {
         //return new BCryptPasswordEncoder();
-        return new PasswordEncoder() {
-
-            @Override
-            public String encode(CharSequence rawPassword) {
-                // TODO Auto-generated method stub
-                 return rawPassword.toString();
-            }
-
-            @Override
-            public boolean matches(CharSequence rawPassword, String encodedPassword) {
-                // TODO Auto-generated method stub
-                 return true;
-            }};
+        return new DefaultSecurityPasswordEncoder();
     }
 
     /**

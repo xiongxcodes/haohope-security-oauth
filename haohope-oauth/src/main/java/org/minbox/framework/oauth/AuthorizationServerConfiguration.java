@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.minbox.framework.oauth.grant.DefaultApiBootOauthTokenGranter;
 import org.minbox.framework.oauth.grant.OAuth2TokenGranter;
+import org.minbox.framework.oauth.passwordencoder.DefaultOauthPasswordEncoder;
+import org.minbox.framework.oauth.passwordencoder.OauthPasswordEncoder;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -122,11 +124,12 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     /**
      * Password Encryption for Users Logging in or Obtaining Token
      *
-     * @return BCryptPasswordEncoder
+     * @return DefaultOauthPasswordEncoder
      */
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    @ConditionalOnMissingBean
+    public OauthPasswordEncoder oauthPasswordEncoder() {
+        return new DefaultOauthPasswordEncoder();
     }
 
     /**
