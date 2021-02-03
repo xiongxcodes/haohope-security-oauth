@@ -1,7 +1,10 @@
 package org.minbox.framework.oauth;
 
-import org.minbox.framework.oauth.grant.OAuth2TokenGranter;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.minbox.framework.oauth.grant.DefaultApiBootOauthTokenGranter;
+import org.minbox.framework.oauth.grant.OAuth2TokenGranter;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +15,11 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.*;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.CompositeTokenGranter;
+import org.springframework.security.oauth2.provider.OAuth2RequestFactory;
+import org.springframework.security.oauth2.provider.TokenGranter;
+import org.springframework.security.oauth2.provider.TokenRequest;
 import org.springframework.security.oauth2.provider.client.ClientCredentialsTokenGranter;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeTokenGranter;
@@ -21,12 +28,13 @@ import org.springframework.security.oauth2.provider.implicit.ImplicitTokenGrante
 import org.springframework.security.oauth2.provider.password.ResourceOwnerPasswordTokenGranter;
 import org.springframework.security.oauth2.provider.refresh.RefreshTokenGranter;
 import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
-import org.springframework.security.oauth2.provider.token.*;
+import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.util.ObjectUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * ApiBoot 集成Oauth2 相关配置实现
@@ -71,8 +79,23 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
      */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security
-                .passwordEncoder(passwordEncoder())
+        security.allowFormAuthenticationForClients()
+                //.passwordEncoder(passwordEncoder())//PasswordEncoder
+        .passwordEncoder( new PasswordEncoder() {
+
+            @Override
+            public String encode(CharSequence rawPassword) {
+                // TODO Auto-generated method stub
+                 return rawPassword.toString();
+            }
+
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                // TODO Auto-generated method stub
+                 return true;
+            }
+            
+        })
                 // Configure open/oauth/token_key access address
                 .tokenKeyAccess("permitAll()")
                 // Configure Open /oauth/check_token Access Address

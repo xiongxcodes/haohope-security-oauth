@@ -20,7 +20,7 @@
 		<maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
 		<nexus-staging-maven-plugin.version>1.6.7</nexus-staging-maven-plugin.version>
 
-		<revision>1.0.0</revision>
+		<revision>1.0.1</revision>
 		<haohope-bom.version>1.0.1</haohope-bom.version>
 	</properties>
 	<dependencyManagement>
@@ -47,7 +47,7 @@
 	<scm>
 		<connection>scm:git:https://github.com/xiongxcodes/haohope-security-oauth.git</connection>
 		<developerConnection>scm:git:https://github.com/xiongxcodes/haohope-security-oauth.git</developerConnection>
-		<url>https://github.com/xiongxcodes/haohope-oss</url>
+		<url>https://github.com/xiongxcodes/haohope-security-oauth</url>
 		<tag>HEAD</tag>
 	</scm>
 	<licenses>
