@@ -47,7 +47,7 @@ public abstract class WebSecurityConfiguration extends WebSecurityConfigurerAdap
     /**
      * Configure user authentication management
      * <p>
-     * Password encryption method {@link #passwordEncoder()}
+     * Password encryption method {@link #securityPasswordEncoder()}
      * </p>
      *
      * @param auth {@link AuthenticationManagerBuilder}

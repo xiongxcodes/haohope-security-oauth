@@ -1,6 +1,6 @@
 package org.minbox.framework.oauth.passwordencoder;
 
-public class DefaultOauthPasswordEncoder extends OauthPasswordEncoder {
+public class DefaultOauthPasswordEncoder implements OauthPasswordEncoder {
 
     @Override
     public String encode(CharSequence rawPassword) {

@@ -1,6 +1,6 @@
 package org.minbox.framework.security.passwordencoder;
 
-public class DefaultSecurityPasswordEncoder extends SecurityPasswordEncoder {
+public class DefaultSecurityPasswordEncoder implements SecurityPasswordEncoder {
 
     @Override
     public String encode(CharSequence rawPassword) {
